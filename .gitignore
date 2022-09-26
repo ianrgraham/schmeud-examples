@@ -1,1 +1,8 @@
 .venv
+
+*.pdb
+*.psf
+*.data
+*.dump
+*.dcd
+*.gsd
