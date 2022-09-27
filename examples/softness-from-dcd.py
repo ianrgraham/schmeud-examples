@@ -20,7 +20,7 @@ type_id = np.zeros(len(initial_ts.positions), dtype=np.uint8)
 
 # extract positions into 3D np.array
 data = []
-for ts in traj.trajectory[:200]:
+for ts in traj.trajectory:
     data.append(ts.positions)
 data = np.array(data).astype(np.float32)
 
@@ -33,7 +33,7 @@ types = 1
 mus = np.linspace(0.4, 3.0, 27, dtype=np.float32)
 mu_spread = 3
 
-for pos, phop in tqdm(zip(data, phop)):
+for idx, (pos, phop) in tqdm(enumerate(zip(data, phop))):
 
     # simple conditional filter to get hard and soft indices
     soft_indices = np.ravel(np.argwhere(phop > 0.2))
@@ -68,13 +68,13 @@ for pos, phop in tqdm(zip(data, phop)):
     out_phop = np.concatenate([phop[soft_indices], phop[hard_indices]])
     out_rearrang = np.concatenate([np.ones_like(soft_indices), np.zeros_like(hard_indices)])
 
-    output.append([out_phop, out_rearrang, sf])
+    output.append([idx, out_phop, out_rearrang, sf])
 
 
-df = pd.DataFrame(output, columns=['phop', 'rearrang', 'sf'])
+df = pd.DataFrame(output, columns=['frame', 'phop', 'rearrang', 'sf'])
 
 # explode (unwrap) the lists at each index
-df = df.apply(pd.Series.explode).reset_index()
+df = df.set_index(['frame']).apply(pd.Series.explode).reset_index()
 
 # arrow is a very fast storage format, and is used by both feather and parquet
 # must have pyarrow installed to use
