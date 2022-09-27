@@ -2,3 +2,4 @@ freud-analysis
 MDAnalysis
 pandas
 pyarrow
+ipykernel
