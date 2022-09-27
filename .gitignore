@@ -6,3 +6,6 @@
 *.dump
 *.dcd
 *.gsd
+
+*.feather
+*.parquet

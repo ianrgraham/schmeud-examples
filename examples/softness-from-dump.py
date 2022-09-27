@@ -1,8 +1,8 @@
 import MDAnalysis as mda
 import MDAnalysis.topology
 import MDAnalysis.coordinates
-import mdtraj
 import freud
+
 import time
 import numpy as np
 
@@ -25,6 +25,7 @@ print(time.time() - now)
 print(data.shape)
 now = time.time()
 phop = dynamics.p_hop(data, 101)
+print(phop[0,:3])
 print(time.time() - now)
 
 # print(phop)
